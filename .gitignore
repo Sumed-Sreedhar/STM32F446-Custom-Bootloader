@@ -1,0 +1,18 @@
+# STM32CubeIDE build directories
+**/Debug/
+**/Release/
+
+# Build artifacts
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+*.d
+
+# STM32CubeIDE workspace metadata
+.metadata/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
