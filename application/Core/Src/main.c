@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "flash_layout.h"
+#include "app_header.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,15 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+__attribute__((section(".header")))
+const app_header_t app_header =
+{
+    .magic   = 0XABCDEFAB,
+    .size    = 0,   // will be used in Part 3
+    .crc     = 0,   // will be used in Part 3
+    .version = 0
+};
 
 /* USER CODE END 0 */
 

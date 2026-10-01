@@ -94,6 +94,15 @@ int main(void)
 
   HAL_UART_Transmit(&huart2, (uint8_t *)"Bootloader is running...\r\n", 27, 100);
 
+  if(bootloader_is_app_valid() != 0)
+  {
+	  HAL_UART_Transmit(&huart2, (uint8_t *)"Failed to jump!! \r\n", 27, 100);
+	  while(1)
+	  {
+		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+		  HAL_Delay(300);
+	  }
+  }
   JumpToApplication();
 
   /* USER CODE END 2 */
