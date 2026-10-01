@@ -61,8 +61,8 @@ __attribute__((section(".header")))
 const app_header_t app_header =
 {
     .magic   = 0XABCDEFAB,
-    .size    = 0,   // will be used in Part 3
-    .crc     = 0,   // will be used in Part 3
+    .size    = 0,
+    .crc     = 0,
     .version = 0
 };
 
