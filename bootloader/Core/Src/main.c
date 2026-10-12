@@ -18,8 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "crc.h"
 #include "usart.h"
 #include "gpio.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bl_jump.h"
@@ -88,21 +90,67 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_CRC_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_Delay(100);
 
   HAL_UART_Transmit(&huart2, (uint8_t *)"Bootloader is running...\r\n", 27, 100);
 
-  if(bootloader_is_app_valid() != 0)
+  int app_status = bootloader_is_app_valid();
+
+  if (app_status != 0)
   {
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"Failed to jump!! \r\n", 27, 100);
-	  while(1)
+	  HAL_UART_Transmit(&huart2,
+			  (uint8_t *)"Failed to jump!\r\n",
+			  sizeof("Failed to jump!\r\n") - 1,
+			  100);
+
+	  switch (app_status)
 	  {
-		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
-		  HAL_Delay(300);
+	  case 1:
+		  HAL_UART_Transmit(&huart2,
+				  (uint8_t *)"Magic number check failed!\r\n",
+				  sizeof("Magic number check failed!\r\n") - 1,
+				  100);
+		  break;
+
+	  case 2:
+		  HAL_UART_Transmit(&huart2,
+				  (uint8_t *)"Reset handler sanity check failed!\r\n",
+				  sizeof("Reset handler sanity check failed!\r\n") - 1,
+				  100);
+		  break;
+
+      case 3:
+    	  HAL_UART_Transmit(&huart2,
+    			  (uint8_t *)"Size sanity check failed!\r\n",
+				  sizeof("Size sanity check failed!\r\n") - 1,
+				  100);
+    	  break;
+
+      case 4:
+    	  HAL_UART_Transmit(&huart2,
+    			  (uint8_t *)"CRC check failed!\r\n",
+				  sizeof("CRC check failed!\r\n") - 1,
+				  100);
+    	  break;
+
+      default:
+    	  HAL_UART_Transmit(&huart2,
+    			  (uint8_t *)"Unknown validation error!\r\n",
+				  sizeof("Unknown validation error!\r\n") - 1,
+				  100);
+    	  break;
 	  }
+
+      while (1)
+      {
+    	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+          HAL_Delay(300);
+      }
   }
+
   JumpToApplication();
 
   /* USER CODE END 2 */
