@@ -190,10 +190,10 @@ Tested on STM32F446RE hardware, observing behaviour over UART.
 | Valid application | Validation succeeds; execution transfers to the application | ✅ Passed |
 | Invalid CRC | Application rejected; CRC failure reported | ✅ Passed |
 | Invalid magic number | Application rejected; magic failure reported | ✅ Passed |
-| Invalid Reset Handler | Application rejected with code `2` | ⏳ Planned |
-| Zero image size | Application rejected with code `3` | ⏳ Planned |
-| Oversized image | Application rejected with code `3` | ⏳ Planned |
-| Corrupted image, unchanged header | CRC mismatch detected | ⏳ Planned |
+| Invalid Reset Handler | Application rejected; Invalid Reset Handler reported | ✅ Passed |
+| Zero image size | Application rejected; Invalid size reported | ✅ Passed |
+| Oversized image | Application rejected; Invalid size reported | ✅ Passed |
+| Corrupted image, unchanged header | Application rejected; CRC mismatch detected | ✅ Passed |
 
 Sample output on success:
 
@@ -243,9 +243,8 @@ CRC check failed!
 
 ## Tools and Technologies
 
-- STM32F446RE (Cortex-M4)
-- STM32CubeIDE and STM32 HAL
-- STM32 hardware CRC peripheral
-- GNU Arm Embedded Toolchain (`arm-none-eabi-objcopy`, `arm-none-eabi-objdump`)
-- Python 3
-- UART terminal for status output
+- STM32CubeIDE
+- STM32CubeMX
+- STM32CubeProgrammer
+- GNU Arm Embedded Toolchain
+
